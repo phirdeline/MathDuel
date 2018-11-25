@@ -1,3 +1,4 @@
+//Decalring variables...
 color cWhite = color(255);
 color cBlue = color(40, 37, 124);
 color cOrange = color(252, 207, 89);
@@ -18,6 +19,7 @@ int state2Frame;
 float rounds, round;
 int gameState = 1;
 
+//do once
 void setup() {
   orientation(PORTRAIT);
   fullScreen();
@@ -29,6 +31,7 @@ void setup() {
   textSize2 = width/9;
   gameState = 0;
   round = 1;
+  //preparing to draw buttons...
   buttonW = 28*width/100;
   buttonH = 14*height/100; 
   buttonR = buttonH/6;
@@ -38,6 +41,7 @@ void setup() {
   firstOptionY = 3*height/4;
   for (int i = 0; i < 3; i++) p0OptionXs[i] = firstOptionX + optionStepW*i;
   for (int j = 0; j < 2; j++) p0OptionYs[j] = firstOptionY + optionStepH*j;
+  //preparing math equation and random numbers
   mainA = int(random(1000));
   mainB = int(random(1000));
   for (int i = 0; i < option.length; i++) { 
@@ -49,12 +53,15 @@ void setup() {
   option[rightIndex] = mainA * mainB;
 }
 
+//do every frame
 void draw() {
   textSize(textSize1);
   background(cWhite);
+  
+  //depending on what the current scene is supposed to be...
   switch(gameState) {
   case 0:
-
+    //drawing things
     fill(cBlue);
     text("Choose the number of rounds", width/2, height/4);
     noFill();
@@ -66,6 +73,7 @@ void draw() {
     text("5", width/3, 4*height/8);
     text("10", 2*width/3, 4*height/8);
     text("Infinity", width/2, 5.3*height/8);
+    //when a button touched the scene switches
     if (mousePressed) {
       if ( (mouseY > 4*height/8-buttonH/2)&&(mouseY < 4*height/8+buttonH/2) ) {
         if ( (mouseX > width/3-buttonW/2)&&(mouseX < width/3+buttonW/2) ) {
@@ -88,8 +96,10 @@ void draw() {
     }
     break;
   case 1:
+    //for every button on one side... (code in between pushMatrix() and popMatrix() mirrors everything to the other side)
     for (int i = 0, k = 0; i < 3; i++) { 
       for (int j = 0; j < 2; j++, k++) {
+        //draw stuff
         noFill();
         stroke(cBlue);
         strokeWeight(width/120);
@@ -99,6 +109,7 @@ void draw() {
         rotate(PI);
         rect(p0OptionXs[i], p0OptionYs[j], buttonW, buttonH, buttonR);
         popMatrix();
+        //switch game state when a choice is made, keeping which player it is in memory
         if (mousePressed) {
           float invertedMouseX;
           float invertedMouseY;
@@ -115,6 +126,7 @@ void draw() {
             }
           };
         };
+        //draw more stuff
         fill(cBlue);
         text(str(option[k]), p0OptionXs[i], p0OptionYs[j]);
         pushMatrix();
@@ -124,6 +136,7 @@ void draw() {
         popMatrix();
       };
     };
+    //draw more stuff
     stroke(cBlue);
     strokeWeight(width/180);
     line(width/3, height/2, 2*width/3, height/2);
@@ -137,7 +150,9 @@ void draw() {
     popMatrix();
     break;
   case 2:
+    //count frames, since the framerate is set to 30 it is as good as counting time
     state2Frame++;
+    //draw stuff
     stroke(cBlue);
     strokeWeight(width/180);
     line(width/3, height/2, 2*width/3, height/2);
@@ -163,6 +178,7 @@ void draw() {
     popMatrix();
     fill(cBlue);
     textSize(textSize2);
+    //draw stuff depending on how many frames have passed
     if (winner==0) {
       if (state2Frame<1*30) {
         text(str(p0Score-1), width/2, 3*height/4);
@@ -197,6 +213,7 @@ void draw() {
     } else {
       text(str(p0Score), width/2, 3*height/4);
     };
+    //doesn't happen on the last round
     if (round!=rounds) {
       stroke(cOrange);
       strokeWeight(width/180);
@@ -225,6 +242,7 @@ void draw() {
   };
 }
 
+//function that switches between game states, resets and updates some variables
 void switchGameState(int k, int rightInd, int player) {
   switch(gameState) {
   case 1:
