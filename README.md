@@ -1,5 +1,5 @@
 # MathDuel
-And android multiplication quiz made as a schoolwork.
+And android multiplication quiz made as a schoolwork. You can play it [here](https://www.openprocessing.org/sketch/632883).
 
 The project is made with Processing in android mode but can also be compiled in Java mode.
 
